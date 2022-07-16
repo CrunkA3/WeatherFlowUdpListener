@@ -24,6 +24,20 @@ public class WFListener
     {
     }
 
+
+    public void OnReceiveMessage(Action<WFMessage> action) => onReceiveMessage = action;
+    public void OnReceiveLightningStrikeMessage(Action<WFLightningStrikeMessage> action) => onReceiveLightningStrikeMessage = action;
+    public void OnReceiveObservationAirMessage(Action<WFObservationAirMessage> action) => onReceiveObservationAirMessage = action;
+    public void OnReceiveObservationSkyMessage(Action<WFObservationSkyMessage> action) => onReceiveObservationSkyMessage = action;
+    public void OnReceiveObservationTempestMessage(Action<WFObservationTempestMessage> action) => onReceiveObservationTempestMessage = action;
+    public void OnReceiveRainStartMessage(Action<WFRainStartMessage> action) => onReceiveRainStartMessage = action;
+    public void OnReceiveRapidWindMessage(Action<WFRapidWindMessage> action) => onReceiveRapidWindMessage = action;
+    public void OnReceiveStatusDeviceMessage(Action<WFStatusDeviceMessage> action) => onReceiveStatusDeviceMessage = action;
+    public void OnReceiveStatusHubMessage(Action<WFStatusHubMessage> action) => onReceiveStatusHubMessage = action;
+
+
+
+
     public async Task ListenAsync(CancellationToken cancellationToken = default)
     {
         while (!cancellationToken.IsCancellationRequested)
@@ -44,25 +58,25 @@ public class WFListener
 
                 else if (messageType == typeof(WFRapidWindMessage))
                     onReceiveRapidWindMessage?.Invoke((WFRapidWindMessage)wfMessage);
-                    
+
                 else if (messageType == typeof(WFObservationAirMessage))
                     onReceiveObservationAirMessage?.Invoke((WFObservationAirMessage)wfMessage);
-                    
+
                 else if (messageType == typeof(WFObservationSkyMessage))
                     onReceiveObservationSkyMessage?.Invoke((WFObservationSkyMessage)wfMessage);
-                    
+
                 else if (messageType == typeof(WFObservationTempestMessage))
                     onReceiveObservationTempestMessage?.Invoke((WFObservationTempestMessage)wfMessage);
-                    
+
                 else if (messageType == typeof(WFRainStartMessage))
                     onReceiveRainStartMessage?.Invoke((WFRainStartMessage)wfMessage);
-                    
+
                 else if (messageType == typeof(WFRapidWindMessage))
                     onReceiveRapidWindMessage?.Invoke((WFRapidWindMessage)wfMessage);
-                    
+
                 else if (messageType == typeof(WFStatusDeviceMessage))
                     onReceiveStatusDeviceMessage?.Invoke((WFStatusDeviceMessage)wfMessage);
-                    
+
                 else if (messageType == typeof(WFStatusHubMessage))
                     onReceiveStatusHubMessage?.Invoke((WFStatusHubMessage)wfMessage);
             }
