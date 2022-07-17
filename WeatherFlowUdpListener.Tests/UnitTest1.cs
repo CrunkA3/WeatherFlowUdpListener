@@ -24,7 +24,7 @@ public class Tests
         Assert.IsNotNull(WFListener);
         WFListener!.OnReceiveMessage(m =>
         {
-            Assert.AreEqual(m.Type, "evt_precip");
+            Assert.That(m.Type, Is.EqualTo("evt_recip"));
             cancellationTokenSource.Cancel();
         });
 
