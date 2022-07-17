@@ -1,13 +1,20 @@
+using System.Net.Sockets;
+
 namespace WeatherFlowUdpListener.Tests;
 
 public class Tests
 {
     WFListener? WFListener;
+    FakeUdpClient? fakeUdpClient;
 
     [SetUp]
     public void Setup()
     {
-        WFListener = new WFListener();
+        fakeUdpClient = new FakeUdpClient();
+        WFListener = WFListener.Create(options =>
+        {
+            options.Client = fakeUdpClient;
+        });
     }
 
     [Test]
@@ -23,6 +30,9 @@ public class Tests
             cancellationTokenSource.Cancel();
         });
 
-        await WFListener.ListenAsync(cancellationToken);
+        var listenTask = WFListener.ListenAsync(cancellationToken);
+        fakeUdpClient!.SendFakeData("{\"serial_number\":\"SK-00008453\",\"type\":\"evt_precip\",\"hub_sn\":\"HB-00000001\",\"evt\":[1493322445]}");
+
+        await listenTask;
     }
 }
