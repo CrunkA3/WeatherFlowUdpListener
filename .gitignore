@@ -1,2 +1,4 @@
-/bin
-/obj
+/WeatherFlowUdpListener/bin
+/WeatherFlowUdpListener/obj
+/WeatherFlowUdpListener.Tests/bin
+/WeatherFlowUdpListener.Tests/obj
