@@ -5,7 +5,6 @@ using System.Text;
 namespace WeatherFlowUdpListener;
 public class WFListener
 {
-    const int listenPort = 50222;
 
     private Action<WFMessage>? onReceiveMessage;
     private Action<WFLightningStrikeMessage>? onReceiveLightningStrikeMessage;
@@ -17,11 +16,24 @@ public class WFListener
     private Action<WFStatusDeviceMessage>? onReceiveStatusDeviceMessage;
     private Action<WFStatusHubMessage>? onReceiveStatusHubMessage;
 
-    private UdpClient client = new UdpClient(listenPort);
-    private IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, listenPort);
+    private readonly UdpClient client;
+    private IPEndPoint endPoint;
 
-    public WFListener()
+    private WFListener(WFListenerOptions options)
     {
+        client = options.Client;
+        endPoint = options.EndPoint;
+    }
+
+    public static WFListener Create()
+    {
+        return new WFListener(new WFListenerOptions());
+    }
+    public static WFListener Create(Action<WFListenerOptions> action)
+    {
+        var options = new WFListenerOptions();
+        action.Invoke(options);
+        return new WFListener(options);
     }
 
 
@@ -38,7 +50,7 @@ public class WFListener
 
     private void OnReceive(IAsyncResult ar)
     {
-        byte[]? bytes = client.EndReceive(ar, ref groupEP!);
+        byte[]? bytes = client.EndReceive(ar, ref endPoint!);
         InvokeReceiveMessage(bytes);
     }
 
