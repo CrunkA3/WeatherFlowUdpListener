@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Sockets;
 
 namespace WeatherFlowUdpListener.Tests;
@@ -5,16 +6,13 @@ namespace WeatherFlowUdpListener.Tests;
 public class Tests
 {
     WFListener? WFListener;
-    FakeUdpClient? fakeUdpClient;
+    WFListenerOptions? udpClientOptions;
+
 
     [SetUp]
     public void Setup()
     {
-        fakeUdpClient = new FakeUdpClient();
-        WFListener = WFListener.Create(options =>
-        {
-            options.Client = fakeUdpClient;
-        });
+        WFListener = WFListener.Create(options => udpClientOptions = options);
     }
 
     [Test]
@@ -26,12 +24,14 @@ public class Tests
         Assert.IsNotNull(WFListener);
         WFListener!.OnReceiveMessage(m =>
         {
-            Assert.IsNotEmpty(m.Type);
+            Assert.AreEqual(m.Type, "evt_precip");
             cancellationTokenSource.Cancel();
         });
 
         var listenTask = WFListener.ListenAsync(cancellationToken);
-        fakeUdpClient!.SendFakeData("{\"serial_number\":\"SK-00008453\",\"type\":\"evt_precip\",\"hub_sn\":\"HB-00000001\",\"evt\":[1493322445]}");
+
+        var sendData = System.Text.Encoding.ASCII.GetBytes("{\"serial_number\":\"SK-00008453\",\"type\":\"evt_precip\",\"hub_sn\":\"HB-00000001\",\"evt\":[1493322445]}");
+        await udpClientOptions!.Client.SendAsync(sendData, new IPEndPoint(IPAddress.Loopback, WFListenerOptions.listenPort));
 
         await listenTask;
     }
