@@ -6,23 +6,27 @@ namespace WeatherFlowUdpListener.Tests;
 public class Tests
 {
     WFListener? WFListener;
-    WFListenerOptions? udpClientOptions;
+    UdpClient? udpClient;
 
 
     [SetUp]
     public void Setup()
     {
-        WFListener = WFListener.Create(options => udpClientOptions = options);
+        WFListener = WFListener.Create(() => {
+            udpClient = new UdpClient(WFListener.listenPort);
+            return udpClient;
+        });
     }
 
+
     [Test]
-    public async Task TestGetSomeMessageAsync()
+    public async Task TestRainStartMessageAsync()
     {
         var cancellationTokenSource = new CancellationTokenSource();
         var cancellationToken = cancellationTokenSource.Token;
 
         Assert.IsNotNull(WFListener);
-        WFListener!.OnReceiveMessage(m =>
+        WFListener!.OnReceiveRainStartMessage(m =>
         {
             Assert.That(m.Type, Is.EqualTo("evt_precip"));
             cancellationTokenSource.Cancel();
@@ -31,7 +35,29 @@ public class Tests
         var listenTask = WFListener.ListenAsync(cancellationToken);
 
         var sendData = System.Text.Encoding.ASCII.GetBytes("{\"serial_number\":\"SK-00008453\",\"type\":\"evt_precip\",\"hub_sn\":\"HB-00000001\",\"evt\":[1493322445]}");
-        await udpClientOptions!.Client.SendAsync(sendData, new IPEndPoint(IPAddress.Loopback, WFListenerOptions.listenPort));
+        await udpClient!.SendAsync(sendData, new IPEndPoint(IPAddress.Loopback, WFListener.listenPort));
+
+        await listenTask;
+    }
+
+
+    [Test]
+    public async Task TestLightningStrikeMessageAsync()
+    {
+        var cancellationTokenSource = new CancellationTokenSource();
+        var cancellationToken = cancellationTokenSource.Token;
+
+        Assert.IsNotNull(WFListener);
+        WFListener!.OnReceiveLightningStrikeMessage(m =>
+        {
+            Assert.That(m.Type, Is.EqualTo("evt_strike"));
+            cancellationTokenSource.Cancel();
+        });
+
+        var listenTask = WFListener.ListenAsync(cancellationToken);
+
+        var sendData = System.Text.Encoding.ASCII.GetBytes("{\"serial_number\":\"AR-00004049\",\"type\":\"evt_strike\",\"hub_sn\":\"HB-00000001\",\"evt\":[1493322445,27,3848]}");
+        await udpClient!.SendAsync(sendData, new IPEndPoint(IPAddress.Loopback, WFListener.listenPort));
 
         await listenTask;
     }
