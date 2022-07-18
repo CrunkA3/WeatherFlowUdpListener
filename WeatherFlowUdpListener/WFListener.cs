@@ -36,15 +36,52 @@ public class WFListener
     }
 
 
-    public void OnReceiveMessage(Action<WFMessage> action) => onReceiveMessage = action;
-    public void OnReceiveLightningStrikeMessage(Action<WFLightningStrikeMessage> action) => onReceiveLightningStrikeMessage = action;
-    public void OnReceiveObservationAirMessage(Action<WFObservationAirMessage> action) => onReceiveObservationAirMessage = action;
-    public void OnReceiveObservationSkyMessage(Action<WFObservationSkyMessage> action) => onReceiveObservationSkyMessage = action;
-    public void OnReceiveObservationTempestMessage(Action<WFObservationTempestMessage> action) => onReceiveObservationTempestMessage = action;
-    public void OnReceiveRainStartMessage(Action<WFRainStartMessage> action) => onReceiveRainStartMessage = action;
-    public void OnReceiveRapidWindMessage(Action<WFRapidWindMessage> action) => onReceiveRapidWindMessage = action;
-    public void OnReceiveStatusDeviceMessage(Action<WFStatusDeviceMessage> action) => onReceiveStatusDeviceMessage = action;
-    public void OnReceiveStatusHubMessage(Action<WFStatusHubMessage> action) => onReceiveStatusHubMessage = action;
+    public WFListener OnReceiveMessage(Action<WFMessage> action)
+    {
+        onReceiveMessage = action;
+        return this;
+    }
+
+    public WFListener OnReceiveLightningStrikeMessage(Action<WFLightningStrikeMessage> action)
+    {
+        onReceiveLightningStrikeMessage = action;
+        return this;
+    }
+    public WFListener OnReceiveObservationAirMessage(Action<WFObservationAirMessage> action)
+    {
+        onReceiveObservationAirMessage = action;
+        return this;
+    }
+    public WFListener OnReceiveObservationSkyMessage(Action<WFObservationSkyMessage> action)
+    {
+        onReceiveObservationSkyMessage = action;
+        return this;
+    }
+    public WFListener OnReceiveObservationTempestMessage(Action<WFObservationTempestMessage> action)
+    {
+        onReceiveObservationTempestMessage = action;
+        return this;
+    }
+    public WFListener OnReceiveRainStartMessage(Action<WFRainStartMessage> action)
+    {
+        onReceiveRainStartMessage = action;
+        return this;
+    }
+    public WFListener OnReceiveRapidWindMessage(Action<WFRapidWindMessage> action)
+    {
+        onReceiveRapidWindMessage = action;
+        return this;
+    }
+    public WFListener OnReceiveStatusDeviceMessage(Action<WFStatusDeviceMessage> action)
+    {
+        onReceiveStatusDeviceMessage = action;
+        return this;
+    }
+    public WFListener OnReceiveStatusHubMessage(Action<WFStatusHubMessage> action)
+    {
+        onReceiveStatusHubMessage = action;
+        return this;
+    }
 
 
     public async Task ListenAsync(CancellationToken cancellationToken)

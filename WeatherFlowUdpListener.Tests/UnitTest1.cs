@@ -12,7 +12,8 @@ public class Tests
     [SetUp]
     public void Setup()
     {
-        WFListener = WFListener.Create(() => {
+        WFListener = WFListener.Create(() =>
+        {
             udpClient = new UdpClient(WFListener.listenPort);
             return udpClient;
         });
@@ -26,13 +27,11 @@ public class Tests
         var cancellationToken = cancellationTokenSource.Token;
 
         Assert.IsNotNull(WFListener);
-        WFListener!.OnReceiveRainStartMessage(m =>
+        var listenTask = WFListener!.OnReceiveRainStartMessage(m =>
         {
             Assert.That(m.Type, Is.EqualTo("evt_precip"));
             cancellationTokenSource.Cancel();
-        });
-
-        var listenTask = WFListener.ListenAsync(cancellationToken);
+        }).ListenAsync(cancellationToken);
 
         var sendData = System.Text.Encoding.ASCII.GetBytes("{\"serial_number\":\"SK-00008453\",\"type\":\"evt_precip\",\"hub_sn\":\"HB-00000001\",\"evt\":[1493322445]}");
         await udpClient!.SendAsync(sendData, new IPEndPoint(IPAddress.Loopback, WFListener.listenPort));
@@ -48,13 +47,11 @@ public class Tests
         var cancellationToken = cancellationTokenSource.Token;
 
         Assert.IsNotNull(WFListener);
-        WFListener!.OnReceiveLightningStrikeMessage(m =>
+        var listenTask = WFListener!.OnReceiveLightningStrikeMessage(m =>
         {
             Assert.That(m.Type, Is.EqualTo("evt_strike"));
             cancellationTokenSource.Cancel();
-        });
-
-        var listenTask = WFListener.ListenAsync(cancellationToken);
+        }).ListenAsync(cancellationToken);
 
         var sendData = System.Text.Encoding.ASCII.GetBytes("{\"serial_number\":\"AR-00004049\",\"type\":\"evt_strike\",\"hub_sn\":\"HB-00000001\",\"evt\":[1493322445,27,3848]}");
         await udpClient!.SendAsync(sendData, new IPEndPoint(IPAddress.Loopback, WFListener.listenPort));
