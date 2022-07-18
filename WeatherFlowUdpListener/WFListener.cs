@@ -5,6 +5,7 @@ using System.Text;
 namespace WeatherFlowUdpListener;
 public class WFListener
 {
+    public const int listenPort = 50222;
 
     private Action<WFMessage>? onReceiveMessage;
     private Action<WFLightningStrikeMessage>? onReceiveLightningStrikeMessage;
@@ -16,24 +17,22 @@ public class WFListener
     private Action<WFStatusDeviceMessage>? onReceiveStatusDeviceMessage;
     private Action<WFStatusHubMessage>? onReceiveStatusHubMessage;
 
-    private readonly UdpClient client;
-    private IPEndPoint endPoint;
+    private readonly Func<UdpClient> clientCreator;
+    private UdpClient? client;
+    private IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, listenPort);
 
-    private WFListener(WFListenerOptions options)
+    private WFListener(Func<UdpClient> clientCreator)
     {
-        client = options.Client;
-        endPoint = options.EndPoint;
+        this.clientCreator = clientCreator;
     }
 
     public static WFListener Create()
     {
-        return new WFListener(new WFListenerOptions());
+        return new WFListener(() => new UdpClient(listenPort));
     }
-    public static WFListener Create(Action<WFListenerOptions> action)
+    public static WFListener Create(Func<UdpClient> clientCreator)
     {
-        var options = new WFListenerOptions();
-        action.Invoke(options);
-        return new WFListener(options);
+        return new WFListener(clientCreator);
     }
 
 
@@ -48,19 +47,9 @@ public class WFListener
     public void OnReceiveStatusHubMessage(Action<WFStatusHubMessage> action) => onReceiveStatusHubMessage = action;
 
 
-    private void OnReceive(IAsyncResult ar)
-    {
-        byte[]? bytes = client.EndReceive(ar, ref endPoint!);
-        InvokeReceiveMessage(bytes);
-    }
-
-    public void StartListen()
-    {
-        var receiveResult = client.BeginReceive(new AsyncCallback(OnReceive), null);
-    }
-
     public async Task ListenAsync(CancellationToken cancellationToken)
     {
+        client = clientCreator.Invoke();
         while (!cancellationToken.IsCancellationRequested)
         {
             var receiveResult = await client.ReceiveAsync(cancellationToken);
@@ -68,6 +57,8 @@ public class WFListener
 
             InvokeReceiveMessage(bytes);
         }
+        client.Dispose();
+        client = null;
     }
 
     private void InvokeReceiveMessage(byte[] bytes)
