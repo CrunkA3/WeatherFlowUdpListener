@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Nuget
 
 # Controls when the workflow will run
 on:
@@ -25,9 +25,20 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+          
+      - name: Restore dependencies
+        run: dotnet restore
+
       - name: Authenticate
         run: dotnet nuget add source --username CrunkA3 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/CrunkA3/index.json"
         
+      - name: Build
+        run: dotnet build --configuration Release
+
       - name: Pack
         run: dotnet pack --configuration Release
         
