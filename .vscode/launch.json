@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/WeatherFlowUdpListner.Tests/bin/Debug/net6.0/WeatherFlowUdpListner.Tests.dll",
+            "program": "${workspaceFolder}/WeatherFlowUdpListener.Showcase/bin/Debug/net6.0/WeatherFlowUdpListener.Showcase.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/WeatherFlowUdpListner.Tests",
+            "cwd": "${workspaceFolder}/WeatherFlowUdpListener.Showcase",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false

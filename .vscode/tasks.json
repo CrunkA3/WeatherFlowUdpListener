@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/WeatherFlowUdpListner.Tests/WeatherFlowUdpListner.Tests.csproj",
+                "${workspaceFolder}/WeatherFlowUdpListener.Tests/WeatherFlowUdpListener.Tests.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/WeatherFlowUdpListner.Tests/WeatherFlowUdpListner.Tests.csproj",
+                "${workspaceFolder}/WeatherFlowUdpListener.Tests/WeatherFlowUdpListener.Tests.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/WeatherFlowUdpListner.Tests/WeatherFlowUdpListner.Tests.csproj"
+                "${workspaceFolder}/WeatherFlowUdpListener.Showcase/WeatherFlowUdpListener.Showcase.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
