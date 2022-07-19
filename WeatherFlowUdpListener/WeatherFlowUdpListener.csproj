@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <OutputType>Dll</OutputType>
+    <OutputType>library</OutputType>
     <PackageId>WeatherFlowUdpListener</PackageId>
     <Version>1.0.0</Version>
     <Authors>CrunkA3</Authors>
