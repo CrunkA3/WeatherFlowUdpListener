@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherFlowUdpListener.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherFlowUdpListener", "WeatherFlowUdpListener\WeatherFlowUdpListener.csproj", "{4CE73702-98D9-47E2-A9CC-A7A3BA0D50F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherFlowUdpListener.Showcase", "WeatherFlowUdpListener.Showcase\WeatherFlowUdpListener.Showcase.csproj", "{4A7C696F-1DB1-41F8-9089-EB55A91802D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{4CE73702-98D9-47E2-A9CC-A7A3BA0D50F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CE73702-98D9-47E2-A9CC-A7A3BA0D50F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CE73702-98D9-47E2-A9CC-A7A3BA0D50F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A7C696F-1DB1-41F8-9089-EB55A91802D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A7C696F-1DB1-41F8-9089-EB55A91802D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A7C696F-1DB1-41F8-9089-EB55A91802D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A7C696F-1DB1-41F8-9089-EB55A91802D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
