@@ -5,7 +5,8 @@ namespace WeatherFlowUdpListener;
 
 [WFMessageType("device_status")]
 public class WFStatusDeviceMessage : WFStatusMessage
-{    [JsonPropertyName("firmware_revision")]
+{
+    [JsonPropertyName("firmware_revision")]
     public int? FirmwareRevision { get; set; }
 
     /// <summary>
@@ -30,7 +31,7 @@ public class WFStatusDeviceMessage : WFStatusMessage
     /// Debug enabled
     /// </summary>
     [JsonPropertyName("debug")]
-    public bool? Debug { get; set; }
+    public int? Debug { get; set; }
 
 
 }
